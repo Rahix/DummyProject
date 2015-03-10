@@ -1,2 +1,2 @@
 # DummyProject
-A MMO that is played in browser
+A MMO that runs in a browser
