@@ -62,15 +62,19 @@ function fullscreenError() {
 document.addEventListener('DOMContentLoaded', documentReady);
 
 function documentReady() {
-  // Set event handlers
-  
-  // Fullscreen
+  // Fullscreen events
   elementID('fullscreen-btn').onclick = toggleFullscreen;
   document.fullscreenError = fullscreenError;
+  
+  // Start game's main
+  main();
 }
 // Utility functions
 
 // A simpler way to get elements by id
 function elementID(id) {
   return document.getElementById(id);
+}
+// This get automatically called
+function main() {
 }

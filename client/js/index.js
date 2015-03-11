@@ -3,9 +3,10 @@
 document.addEventListener('DOMContentLoaded', documentReady);
 
 function documentReady() {
-  // Set event handlers
-  
-  // Fullscreen
+  // Fullscreen events
   elementID('fullscreen-btn').onclick = toggleFullscreen;
   document.fullscreenError = fullscreenError;
+  
+  // Start game's main
+  main();
 }
