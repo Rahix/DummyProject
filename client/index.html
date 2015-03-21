@@ -6,8 +6,15 @@
     <link rel="stylesheet" href="style/DummyProject.min.css">
   </head>
   <body>
-    <div id="main-container" class="main-container">
-      <img id="fullscreen-btn" class="fullscreen-btn" src="img/fullscreen.svg" />
+    <div id="rotate-view" class="view">
+      <div class="rotate-panel">
+	<img src="img/rotate.svg" class="rotate-img" />
+	<br>
+	<span><strong>Please rotate your device</strong></span>
+      </div>
+    </div>
+    
+    <div id="game-view" class="view">
       <canvas id="main-canvas" class="main-canvas">
       </canvas>
     </div>
