@@ -49,6 +49,12 @@ module.exports = function(grunt) {
         src: 'img/*',
         dest: 'dist/'
       }
+    },
+    
+    mochaTest: {
+      test: {
+        src: ['js/game/test/*.js']
+      }
     }
   });
   
@@ -56,11 +62,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
+  grunt.loadNpmTasks('grunt-mocha-test');
   
   // Register tasks
   grunt.registerTask('default', ['clean:dist', 'concat:js', 'uglify:js', 'concat:css', 'cssmin:dist', 'htmlmin:core', 'copy:img']);
+  
+  grunt.registerTask('test', ['mochaTest']);
 }
