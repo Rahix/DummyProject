@@ -14,7 +14,7 @@ module.exports = function(grunt) {
     
     concat: {
       js: {
-        src: ['js/*.js', 'js/game/*.js'],
+        src: ['js/game/*.js', 'js/*.js'],
         dest: 'dist/js/<%= pkg.name %>.js'
       },
       css: {
@@ -53,6 +53,12 @@ module.exports = function(grunt) {
     
     mochaTest: {
       test: {
+        options: {
+          reporter: 'spec',
+          require: [
+            'js/game/mapstorage.js'
+          ]
+        },
         src: ['js/game/test/*.js']
       }
     }
