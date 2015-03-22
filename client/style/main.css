@@ -1,11 +1,27 @@
 /* General stuff */
+@viewport {
+    zoom: 1.0;
+    min-zoom: 1.0;
+    max-zoom: 1.0;
+    user-zoom: fixed;
+    orientation:lanscape;
+}
+
+@-ms-viewport {
+    zoom: 1.0;
+    min-zoom: 1.0;
+    max-zoom: 1.0;
+    user-zoom: fixed;
+    orientation:lanscape;
+}
+
 body {
   font-family: sans-serif;
 }
 
 .main-container {
   position: absolute;
-  
+
   top: 0;
   left: 0;
   width: 100%;
@@ -14,27 +30,27 @@ body {
 
 .view {
   position: absolute;
-  
+
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  
+
   z-index: 100;
 }
 
 /* Rotate device view styles */
 #rotate-view {
   display: none;
-  
+
   background-color: #5EC5E5;
-  
+
   z-index: 1000;
 }
 
 .rotate-panel {
   position: absolute;
-  
+
   top: 30%;
   right: 20%;
   width: 60%;
@@ -42,7 +58,7 @@ body {
 
 .rotate-panel > img {
   width: 100%;
-  
+
   margin-bottom: 15px;
 }
 
@@ -53,14 +69,14 @@ body {
 /* Game view styles */
 .main-canvas {
   position: absolute;
-  
+
   background-color: #000;
-  
+
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  
+
   z-index: 200;
 }
 
@@ -71,7 +87,7 @@ body {
   #rotate-view {
     display: unset;
   }
-  
+
   /* Game view styles */
-  
+
 }

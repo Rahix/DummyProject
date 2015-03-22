@@ -1326,12 +1326,16 @@ var test_data = {
 
 function main() {
     map_storage = new MapStorage();
-    map_storage.setChunk(0,0,test_data)
+    map_storage.setChunk(0,0,test_data);
+    map_storage.setChunk(1,1,test_data);
+    map_storage.setChunk(0,1,test_data);
+    map_storage.setChunk(1,0,test_data);
     canvas = elementID("main-canvas");
     render_engine = new RenderEngine(canvas);
     setInterval(game_loop, 1000);
 }
 
 function game_loop() {
-    render_engine.render(.5, [.99, .99], map_storage);
+    updateSize();
+    render_engine.render(.1, [.5, .5], map_storage);
 }

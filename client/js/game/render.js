@@ -14,7 +14,23 @@ function RenderEngine(canvas)
             );
         var chunkX = this.canvas.width/2 - iso_util.to_isometric_x(focus_coords[0]*16,focus_coords[1]*16, zoom);
         var chunkY = this.canvas.height/2 - iso_util.to_isometric_y(focus_coords[0]*16,focus_coords[1]*16, zoom);
-        this.render_chunk(chunk, chunkX, chunkY, zoom);
+        // Done center chunk. Calculate visible chunks
+        var y;
+        var x;
+        for(y=-2;y<3;y++)
+        {
+            for(x=-2;x<3;x++)
+            {
+                var chunk = map_storage.getChunk(
+                    Math.floor(focus_coords[1])+y,
+                    Math.floor(focus_coords[0])+x
+                    );
+                var cX = iso_util.to_isometric_x(x*16, y*16, zoom) + chunkX;
+                var cY = iso_util.to_isometric_y(x*16, y*16, zoom) + chunkY;
+                if(chunk != null)
+                  this.render_chunk(chunk, cX, cY, zoom);
+            }
+        }
     }
 
     // Render a chunk (16, 16)
