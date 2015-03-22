@@ -7,7 +7,14 @@ function RenderEngine(canvas)
 
     this.render = function(zoom, focus_coords, map_storage)
     {
-        this.render_chunk(map_storage.getChunk(0, 0), this.canvas.width/2, 0, zoom);
+        //Calculate what chunk is in the mid:
+        var chunk = map_storage.getChunk(
+            Math.floor(focus_coords[1]),
+            Math.floor(focus_coords[0])
+            );
+        var chunkX = this.canvas.width/2 - iso_util.to_isometric_x(focus_coords[0]*16,focus_coords[1]*16, zoom);
+        var chunkY = this.canvas.height/2 - iso_util.to_isometric_y(focus_coords[0]*16,focus_coords[1]*16, zoom);
+        this.render_chunk(chunk, chunkX, chunkY, zoom);
     }
 
     // Render a chunk (16, 16)

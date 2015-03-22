@@ -1333,5 +1333,5 @@ function main() {
 }
 
 function game_loop() {
-    render_engine.render(.5, [8, 8], map_storage);
+    render_engine.render(.5, [.99, .99], map_storage);
 }
