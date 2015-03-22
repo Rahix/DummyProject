@@ -1,16 +1,10 @@
 /*
  * Eventnames of UserHandler + Event attributes:
- * 'mouseClick': Fired when the user clicked (without moving the mouse).
+ * 'mouseDown': Fired when the user presses any mouse buttons down.
  *   {
  *     'x': Absolute X-Position of mouse
  *     'y': Absolute Y-Position of mouse
- *     'button': 1=LeftClick 2=RightClick 3=Middle
- *   }
- * 'mouseDown': Fired when the user presses any mous buttons.
- *   {
- *     'x': Absolute X-Position of mouse
- *     'y': Absolute Y-Position of mouse
- *     'button': 1=LeftClick 2=RightClick 3=Middle
+ *     'button': 0=None 1=LeftClick 2=RightClick 3=Middle
  *   }
  * 'mouseMove': Fired when the user moves the PRESSED mouse.
  *   {
@@ -18,13 +12,14 @@
  *     'y': Absolute Y-Position of mouse after move
  *     'deltaX': Relative X-Movement
  *     'deltaY': Relative Y-Movement
- *     'button': 1=LeftClick 2=RightClick 3=Middle
+ *     'button': 0=None 1=LeftClick 2=RightClick 3=Middle
  *   }
- * 'mouseUp': Fired when the user releases any mous buttons.
+ * 'mouseUp': Fired when the user releases any mouse buttons.
  *   {
  *     'x': Absolute X-Position of mouse
  *     'y': Absolute Y-Position of mouse
- *     'button': 1=LeftClick 2=RightClick 3=Middle
+ *     'button': 0=None 1=LeftClick 2=RightClick 3=Middle
+ *     'moved': Whether the user moved the mouse before mouse up. 
  *   }
  * 'zoomUpdate': Fired when the zoom was updated.
  *   {
@@ -36,6 +31,8 @@ function UserHandler() {
   this.eventCache = [];
   
   this.zoom = 0.5;
+  this.lastX = 0;
+  this.lastY = 0;
   
   // Assign all events to it. Now it can start working.
   this.assignEvents = function() {
@@ -52,6 +49,11 @@ function UserHandler() {
     if (this.eventCache.length > 0) {
       var event = this.eventCache[0];
       this._removeEventByIndex(0);
+      
+      // Mouse movement handled; we can now have new deltas
+      if (event.type === 'mouseMove')
+        this.lastX = this.lastY = 0;
+      
       return event;
     } else {
       return {type: 'none', data: {}};
@@ -61,18 +63,38 @@ function UserHandler() {
   // Internal event handler
   
   this.onmousedown = function(e) {
-    console.log(this);
+    this.lastX = e.clientX;
+    this.lastY = e.clientY;
+    
+    this._pushEvent('mouseDown', {
+      'x': e.clientX,
+      'y': e.clientY,
+      'button': this._getButton(e)
+    });
   };
   
   this.onmousemove = function(e) {
-    // We only handle move if mouse is pressed.
+    // We only handle movement if mouse is down.
     if (this._isDown(e)) {
+      var deltaX = e.clientX - this.lastX;
+      var deltaY = e.clientY - this.lastY;
       
+      this._pushUniqueEvent('mouseMove', {
+      'x': e.clientX,
+      'y': e.clientY,
+      'deltaX': deltaX,
+      'deltaY': deltaY,
+      'button': this._getButton(e)
+    });
     }
   };
   
   this.onmouseup = function(e) {
-    console.log(e);
+     this._pushEvent('mouseUp', {
+      'x': e.clientX,
+      'y': e.clientY,
+      'button': this._getButton(e)
+    });
   };
   
   this.onwheel = function(e) {
@@ -81,13 +103,7 @@ function UserHandler() {
     if (e.deltaY !== 0)
       this.zoom += (e.deltaY < 0 ? -1 : 1) * zoomSpeed;
     
-    // If there is already a zoom event,
-    // don't create a new one; recreate it
-    this._removeEventsByType('zoomUpdate');
-    this._pushEvent('zoomUpdate', {'zoom': this.zoom});
-    
-    console.log(this.zoom);
-    console.log(this.eventCache);
+    this._pushUniqueEvent('zoomUpdate', {'zoom': this.zoom});
   };
   
   // Internal utils
@@ -95,6 +111,20 @@ function UserHandler() {
   // Return whether the mouse is down
   this._isDown = function(event) {
     return event.buttons !== 0;
+  };
+  
+  // Return the button type
+  this._getButton = function(event) {
+    switch(event.buttons) {
+      case 1:
+        return 1; // Left
+      case 4:
+        return 2; // Middle
+      case 2:
+        return 3; // Right
+      default:
+        return 0;  // None
+    }
   };
   
   // Push a new event to event cache
@@ -105,17 +135,28 @@ function UserHandler() {
     });
   };
   
+  // Replace or add a new event (by type) to make it unique
+  this._pushUniqueEvent = function(type, data) {
+    var found = false;
+    
+    for (var i = 0; i < this.eventCache.length; i++) {
+      if (this.eventCache[i].type === type) {
+        // After we found it, we remove all others of this type
+        if (found) {
+          this._removeEventByIndex(i);
+        } else {
+          this.eventCache[i].data = data;
+          found = true;
+        }
+      }
+    }
+    if (!found) {
+      this._pushEvent(type, data);
+    }
+  }
+  
   // Remove event by event index
   this._removeEventByIndex = function(index) {
     this.eventCache.splice(index, 1);
-  }
-  
-  // Remove all events of this type
-  this._removeEventsByType = function(type) {
-    for (var i = 0; i < this.eventCache.length; i++) {
-      if (this.eventCache[i].type === type) {
-        this._removeEventByIndex(i);
-      }
-    }
   }
 };
