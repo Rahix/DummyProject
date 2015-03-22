@@ -14,7 +14,7 @@ function RenderEngine(canvas)
             );
         var chunkX = this.canvas.width/2 - iso_util.to_isometric_x(focus_coords[0]*16,focus_coords[1]*16, zoom);
         var chunkY = this.canvas.height/2 - iso_util.to_isometric_y(focus_coords[0]*16,focus_coords[1]*16, zoom);
-        // Done center chunk. Calculate visible chunks
+        // Done center chunk calcs. Calculate visible chunks
         var y;
         var x;
         for(y=-2;y<3;y++)
@@ -27,11 +27,12 @@ function RenderEngine(canvas)
                     );
                 var cX = iso_util.to_isometric_x(x*16, y*16, zoom) + chunkX;
                 var cY = iso_util.to_isometric_y(x*16, y*16, zoom) + chunkY;
-                if(chunk != null)
+                if(chunk !== null)
+                {
                   this.render_chunk(chunk, cX, cY, zoom);
+                }
             }
         }
-        this.render_chunk(chunk, chunkX, chunkY, zoom);
     }
 
     // Render a chunk (16, 16)
