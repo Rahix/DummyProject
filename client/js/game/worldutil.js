@@ -3,15 +3,15 @@
 var iso_util = {
     tile_scale: 256,
     to_isometric_img_x: function(x, y, zoom) {
-        return ( (x - y) * (tile_scale / 2) - tile_scale ) * zoom;
+        return ( (x - y) * (this.tile_scale / 2) - this.tile_scale ) * zoom;
     },
     to_isometric_img_y: function(x, y, zoom) {
-        return ( (x + y) * (tile_scale / 4) - (tile_scale / 2 ) ) * zoom;
+        return ( (x + y) * (this.tile_scale / 4) - (this.tile_scale / 2 ) ) * zoom;
     },
     to_isometric_x: function(x, y, zoom) {
-        return ( (x - y) * (tile_scale / 2) ) * zoom;
+        return ( (x - y) * (this.tile_scale / 2) ) * zoom;
     },
     to_isometric_y: function(x, y, zoom) {
-        return ( (x + y) * (tile_scale / 4) ) * zoom;
+        return ( (x + y) * (this.tile_scale / 4) ) * zoom;
     }
 }

@@ -7,40 +7,33 @@
  * }
  */
 
-var MapStorage = function() {
-  this.init();
-};
-
-MapStorage.prototype = {
-  // Init map storage with an empty map.
-  init: function() {
+function MapStorage() {
     this.map = {};
-  },
-  
-  // Return the chunk data of a position.
-  getChunk: function(x, y) {
-    if (this._isChunk(x, y)) {
-      return this.map[x][y];
-    } else {
-      return null;
+
+    // Return the chunk data of a position.
+    this.getChunk = function(x, y) {
+        if (this._isChunk(x, y)) {
+            return this.map[x][y];
+        } else {
+            return null;
+        }
     }
-  },
-  
-  // Set the chunk data at a specific position.
-  setChunk: function(x, y, chunk) {
-    if (typeof this.map[x] === 'undefined') {
-      this.map[x] = {};
+
+    // Set the chunk data at a specific position.
+    this.setChunk = function(x, y, chunk) {
+        if (typeof this.map[x] === 'undefined') {
+            this.map[x] = {};
+        }
+
+        this.map[x][y] = chunk;
+    },
+
+    // Internals
+
+    // Return whether there is a chunk at that position.
+    this._isChunk = function(x, y) {
+        if (typeof this.map[x] !== 'undefined')
+            return typeof this.map[x][y] !== 'undefined';
+        return false;
     }
-    
-    this.map[x][y] = chunk;
-  },
-  
-  // Internals
-  
-  // Return whether there is a chunk at that position.
-  _isChunk: function(x, y) {
-    if (typeof this.map[x] !== 'undefined')
-      return typeof this.map[x][y] !== 'undefined';
-    return false;
-  }
 }
