@@ -14,7 +14,6 @@ function RenderEngine(canvas)
             );
         var chunkX = this.canvas.width/2 - iso_util.to_isometric_x(focus_coords[0]*16,focus_coords[1]*16, zoom);
         var chunkY = this.canvas.height/2 - iso_util.to_isometric_y(focus_coords[0]*16,focus_coords[1]*16, zoom);
-<<<<<<< HEAD
         // Done center chunk. Calculate visible chunks
         var y;
         var x;
@@ -32,9 +31,7 @@ function RenderEngine(canvas)
                   this.render_chunk(chunk, cX, cY, zoom);
             }
         }
-=======
         this.render_chunk(chunk, chunkX, chunkY, zoom);
->>>>>>> a23dcf776516712cc5351a62c73cb667c69882ad
     }
 
     // Render a chunk (16, 16)
