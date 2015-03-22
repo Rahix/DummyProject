@@ -23,7 +23,7 @@
  *   }
  * 'zoomUpdate': Fired when the zoom was updated.
  *   {
- *     'zoom': Zoom position from 0 (out) to 1 (in)
+ *     'zoom': Zoom position from 0.05 (out) to 1 (in)
  *   }
  */
 
@@ -100,8 +100,14 @@ function UserHandler() {
   this.onwheel = function(e) {
     // Calculate new zoom
     var zoomSpeed = 0.05;
+    var minZoom = 0.05;
+    var maxZoom = 1;
     if (e.deltaY !== 0)
-      this.zoom += (e.deltaY < 0 ? -1 : 1) * zoomSpeed;
+      this.zoom += (e.deltaY < 0 ? 1 : -1) * zoomSpeed;
+    if (this.zoom < minZoom)
+      this.zoom = minZoom;
+    if (this.zoom > maxZoom)
+      this.zoom = maxZoom;
     
     this._pushUniqueEvent('zoomUpdate', {'zoom': this.zoom});
   };
