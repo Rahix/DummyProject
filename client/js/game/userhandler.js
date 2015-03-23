@@ -44,7 +44,7 @@ function UserHandler() {
     canvas.onwheel = function(e) { self.onwheel(e) };
   };
   
-  // Get next event by FIFO principle. It will be removed.
+  // Get next event by FIFO principle. It will be removed afterwards.
   this.getNextEvent = function() {
     if (this.eventCache.length > 0) {
       var event = this.eventCache[0];
@@ -59,6 +59,9 @@ function UserHandler() {
       return {type: 'none', data: {}};
     }
   }
+  
+  // Externally used event handler
+  
   
   // Internal event handler
   
